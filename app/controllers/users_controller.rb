@@ -1,8 +1,10 @@
 class UsersController < ApplicationController
 
       def index 
-        if session[:current_user]
+        if session[:current_user] && User.find_by(id: session[:current_user]).present?
             redirect_to controller: 'users', action: 'show', id: session[:current_user]
+        else
+          session[:current_user] = nil
         end
       end
       

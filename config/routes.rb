@@ -8,4 +8,6 @@ Rails.application.routes.draw do
   get "/login", to: "users#index"
   post "/login", to: "users#login"
   get "/signup", to: "users#new"
+  
+  resources :courses
 end
