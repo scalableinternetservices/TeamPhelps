@@ -1,5 +1,12 @@
 class UsersController < ApplicationController
-    def show
+
+      def index 
+        if session[:current_user]
+            redirect_to controller: 'users', action: 'show', id: session[:current_user]
+        end
+      end
+      
+      def show
         @user = User.find(params[:id])
       end
 
@@ -15,13 +22,11 @@ class UsersController < ApplicationController
       end
 
       def new
-        @users = User.all
         @user = User.new
       end
 
       def create
         @user = User.new(user_params)
-        @users = User.all
     
         if @user.save
           session[:current_user] = @user.id
@@ -36,7 +41,6 @@ class UsersController < ApplicationController
       end
     
       def update
-        @users = User.all
         @user = User.find(params[:id])
     
         if @user.update(user_params)
