@@ -10,4 +10,6 @@ Rails.application.routes.draw do
   get "/signup", to: "users#new"
   
   resources :courses
+  root "posts#index"
+  resources :posts
 end
