@@ -3,10 +3,7 @@ class PostsController < AuthenticatedController
 
   before_action :set_post, only: %i[ show edit update destroy ]
 
-  def set_post
-    @post = Post.find(params[:id])
-    @course = Course.find(@post.course_id)
-  end
+  
 
   def index
     @posts = Post.all
@@ -33,12 +30,6 @@ class PostsController < AuthenticatedController
     end
   end
 
-  private
-  def post_params
-    params.require(:post).permit(:course_id, :title, :body)
-  end
-
-
   def edit
     # @post = Post.find_by(id: params[:id])
   end
@@ -46,12 +37,25 @@ class PostsController < AuthenticatedController
   def update
     # @post = Post.find_by(id: params[:id])
     if @post.update(post_params)
-      redirect_to @post
+      redirect_to course_post_path @post
     else
       render :edit, status: :unprocessable_entity
 
     end
   end
+
+  private
+  def post_params
+    params.require(:post).permit(:course_id, :title, :body)
+  end
+
+  def set_post
+    @post = Post.find(params[:id])
+    @course = Course.find(@post.course_id)
+  end
+
+
+  
   #
   # def destroy
   #   # logger.info "Processing the request... "
