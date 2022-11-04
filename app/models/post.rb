@@ -1,7 +1,7 @@
 class Post < ApplicationRecord
   # belongs_to :user
   # belongs_to :class
-  belongs_to :postable, polymorphic: true
+  belongs_to :postable, polymorphic: true, optional: true
   has_many :comments
 
   # validates_presence_of :user
