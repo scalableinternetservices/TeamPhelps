@@ -1,8 +1,8 @@
 class User < ApplicationRecord
-    has_many :roles, autosave: true
+    has_many :roles, autosave: true, dependent: :destroy
     has_many :courses, through: :roles
-    has_many :posts
-    has_many :comments
+    has_many :posts, dependent: :destroy
+    has_many :comments, dependent: :destroy
 
     #validations for user name and email
     validates :name, presence: true, uniqueness: { case_sensitive: false }, length: { minimum: 3, maximum: 25 }
