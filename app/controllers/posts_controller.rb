@@ -1,12 +1,19 @@
-class PostsController < ApplicationController
+class PostsController < AuthenticatedController
+
+
+  before_action :set_post, only: %i[ show edit update destroy ]
+
+  def set_post
+    @post = Post.find(params[:id])
+    @course = Course.find(@post.course_id)
+  end
+
   def index
     @posts = Post.all
   end
 
   def show
-    @post = Post.find_by_id(params[:id])
-    # @user = User.find(@post.user_id)
-    @course = Course.find(@post.course_id)
+
   end
 
   def new
@@ -33,14 +40,12 @@ class PostsController < ApplicationController
 
 
   def edit
-    logger.info("post : #{@post}")
-    @post = Post.find_by(id: params[:id])
+    # @post = Post.find_by(id: params[:id])
   end
 
   def update
-    logger.info("post : #{@post}")
-    @post = Post.find_by(id: params[:id])
-    if @post.update(Post_params)
+    # @post = Post.find_by(id: params[:id])
+    if @post.update(post_params)
       redirect_to @post
     else
       render :edit, status: :unprocessable_entity
