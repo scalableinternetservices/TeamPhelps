@@ -10,6 +10,7 @@ class UsersController < ApplicationController
       
       def show
         @user = User.find(params[:id])
+        @courses = Course.all
       end
 
       def login
