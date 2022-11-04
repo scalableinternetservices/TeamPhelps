@@ -9,6 +9,16 @@
         <span class="icon-bar"></span>
       </button>
       <a class="navbar-brand" href="#"><%= @user.name %>'s Conclave</a>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-link"><%= link_to "Edit", edit_course_path(@course) %></li>
+          <li class="nav-link"><%= link_to "Delete", course_path(@course), data: {
+              turbo_method: :delete,
+              turbo_confirm: "Are you sure?"
+            } %> 
+          </li>
+        </ul>
+      </div>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
