@@ -17,17 +17,10 @@ class PostsController < ApplicationController
     @post = Post.new(user_id: @current_user.id, course_id: course_id,
                         title: post_params[:title], body: post_params[:body])
 
-    logger.info "user_id: #{@current_user.id}"
-    logger.info "course_id: #{course_id}"
-    logger.info "title: #{post_params[:title]}"
-    logger.info "body: #{post_params[:body]}"
-
     if @post.save
       redirect_to controller: 'posts', action: 'show', id: @post.id
-      logger.info('saved')
     else
       render :new, status: :unprocessable_entity
-      logger.info('not saved')
     end
   end
 

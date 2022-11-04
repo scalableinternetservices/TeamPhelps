@@ -14,10 +14,6 @@ Rails.application.routes.draw do
     resources :posts
   end
 
-  # resources :posts
-  # get "/courses/:id/posts", to: "courses#posts#index"
   post "/courses/:course_id/posts/new", to: "posts#create"
 
-
-  # post "/posts/new", to: "posts#new"
 end
