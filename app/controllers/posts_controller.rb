@@ -7,12 +7,19 @@ class PostsController < ApplicationController
     @post = Post.find_by_id(params[:id])
   end
 
+  def new
+    @post = Post.new
+  end
 
   def create
-    @user = User.find(params[:article_id])
-    @class = Course.find(params[:article_id])
-    @post = Post.create(post_params)
-    redirect_to article_path(@article)
+    @post = Post.new(user_id:@current_user.id, course_id: post_params[:course],
+                        title: post_params[:title], body: post_params[:body])
+    
+    # if @post.save
+    #   redirect_to controller: 'posts', action: 'show', id: @post.id
+    # else
+    #   render :new, status: :unprocessable_entity
+    # end
   end
 
   private
@@ -21,20 +28,20 @@ class PostsController < ApplicationController
   end
 
 
-  # def edit
-  #   @post = Post.find(params[:id])
-  # end
-  #
-  # def update
-  #   @post = Post.find(params[:id])
-  #
-  #   if @post.update(Post_params)
-  #     redirect_to @post
-  #   else
-  #     render :edit, status: :unprocessable_entity
-  #
-  #   end
-  # end
+  def edit
+    @post = Post.find(params[:id])
+  end
+
+  def update
+    @post = Post.find(params[:id])
+
+    if @post.update(Post_params)
+      redirect_to @post
+    else
+      render :edit, status: :unprocessable_entity
+
+    end
+  end
   #
   # def destroy
   #   # logger.info "Processing the request... "
