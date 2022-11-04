@@ -5,10 +5,14 @@ class CoursesController < AuthenticatedController
     # GET /posts or /posts.json
     def index
       @courses = Course.all
+      #Temporary variable for the navbar, until we find a better solution
+      @user = @current_user
     end
   
     def show
       @roles = Role.where(course_id: @course.id)
+      #Temporary variable for the navbar, until we find a better solution
+      @user = @current_user
     end
   
     def new
@@ -16,6 +20,9 @@ class CoursesController < AuthenticatedController
     end
   
     def edit
+      #Temporary variable for the navbar, until we find a better solution
+      @user = @current_user
+
     end
   
     def create

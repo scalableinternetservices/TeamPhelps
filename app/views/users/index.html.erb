@@ -1,40 +1,28 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Login page</title>
-  </head>
+<body class='login-body'>
+  <div class='loginbox'>
+    <h1> User Login </h1>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-link active"><%= link_to "Sign up", signup_path(@user) %></li>
-        </ul>
-  </div>
-  <body class='login-body'>
-    <div class='loginbox'>
-      <h1> User Login </h1>
-
-      <% if alert %>
-        <p class="alert alert-danger"><%= alert %></p>
-      <% end %>
+    <% if alert %>
+      <p class="alert alert-danger"><%= alert %></p>
+    <% end %>
+    
+    <%= form_with model: @user, url: '/login', method: :post, local: true do |form| %>
+        <div>
+          <%= form.label :name %><br>
+          <%= form.text_field :name %>
+        </div>
       
-      <%= form_with model: @user, url: '/login', method: :post, local: true do |form| %>
-          <div>
-            <%= form.label :name %><br>
-            <%= form.text_field :name %>
-          </div>
-        
-          <div>
-            <%= form.label :email %><br>
-            <%= form.text_field :email %><br>
-          </div>
-        
-          <div>
-            <%= form.submit "Log in" %>
-          </div>
-        <% end %>
-    </div>
-  </body>
-</html>
+        <div>
+          <%= form.label :email %><br>
+          <%= form.text_field :email %><br>
+        </div>
+      
+        <div>
+          <%= form.submit "Log in" %>
+          <%= link_to "Sign up", signup_path(@user) %>
+  
+        </div>
+      <% end %>
+  </div>
+</body>
 
