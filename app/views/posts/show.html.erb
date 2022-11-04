@@ -4,24 +4,23 @@
   <div id="post-info">
     <table>
       <tr>
+        <th>User</th>
+        <th>Course</th>
         <th>Title</th>
         <th>Body</th>
         <th></th>
       </tr>
       <tr>
+        <td><%= @current_user.name %></td>
+        <td><%= @course.name %></td>
         <td><%= @post.title %></td>
         <td><%= @post.body %></td>
         <td>
-          <a class="edit-button" href=<%=
-            # link_to  "Edit",
-            '/'
-          %>>Edit</a>
-          <a class="delete-button" href=<%=
-            # link_to  "Delete", post_path, data: {
-            # turbo_method: :delete,
-            # turbo_confirm: "Are you sure?"}
-            '/'
-          %>>Delete</a>
+          <li class="nav-link"><%= link_to "Edit", edit_course_post_path(@post) %></li>
+          <li class="nav-link"><%= link_to "Delete", course_post_path(@post), data: {
+            turbo_method: :delete,
+            turbo_confirm: "Are you sure?"
+          } %>
         </td>
       </tr>
     </table>

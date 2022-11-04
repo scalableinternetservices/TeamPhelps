@@ -5,6 +5,8 @@ class PostsController < ApplicationController
 
   def show
     @post = Post.find_by_id(params[:id])
+    # @user = User.find(@post.user_id)
+    @course = Course.find(@post.course_id)
   end
 
   def new
@@ -31,12 +33,13 @@ class PostsController < ApplicationController
 
 
   def edit
-    @post = Post.find(params[:id])
+    logger.info("post : #{@post}")
+    @post = Post.find_by(id: params[:id])
   end
 
   def update
-    @post = Post.find(params[:id])
-
+    logger.info("post : #{@post}")
+    @post = Post.find_by(id: params[:id])
     if @post.update(Post_params)
       redirect_to @post
     else
