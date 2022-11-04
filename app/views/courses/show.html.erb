@@ -29,8 +29,9 @@
     <ul>
     <% @roles.each do |role|%>
     <li> 
-        <div> <%= role.user.name%> </div>
+        <div> <%= link_to role.user.name, role.user%> </div>
         <div> <%= role.user.email%> </div>
+        <div> <%= role_to_text role.role %> </div>
     </li>
     <% end %>
     </ul>

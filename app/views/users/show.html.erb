@@ -13,10 +13,12 @@
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
+
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-link"><%= link_to "Edit", edit_user_path(@user) %></li>
-          <li class="nav-link"><%= link_to "Delete", user_path(@user), data: {
+          <li class="nav-link"><%= link_to "Create course", new_course_path %> </li>
+          <li class="nav-link"><%= link_to "Edit User", edit_user_path(@user) %></li>
+          <li class="nav-link"><%= link_to "Delete User", user_path(@user), data: {
               turbo_method: :delete,
               turbo_confirm: "Are you sure?"
             } %> 
@@ -26,6 +28,17 @@
     </nav>
     <div class='main container' style='text-align:left;'>
     <h3> My Classes </h3>
+
+    <div class='list-group' >
+    <ul>
+      <% @courses.each do |course| %>
+        <button style="display:flex;" type="button" class="list-group-item list-group-item-action" aria-current="true">
+          <%= link_to course.name, course %>
+          <p> "Join Course not yet implemented" </p>
+        </button>
+      <% end %>
+    </ul>
+    </div>
 
     <!-- 
     TODO: When classes and posts are fixed will create a display for it

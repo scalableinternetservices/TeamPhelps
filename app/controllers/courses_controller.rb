@@ -20,7 +20,7 @@ class CoursesController < AuthenticatedController
   
     def create
       @course = Course.new(course_params)
-      @course.roles.build(user: @current_user, course: @course)
+      @course.roles.build(user: @current_user, course: @course, role:0)
       # @course.users << User.find(@current_user.id)
 
   
