@@ -12,19 +12,28 @@ class PostsController < ApplicationController
   end
 
   def create
-    @post = Post.new(user_id:@current_user.id, course_id: post_params[:course],
+    course_id = params[:course_id]
+
+    @post = Post.new(user_id: @current_user.id, course_id: course_id,
                         title: post_params[:title], body: post_params[:body])
-    
-    # if @post.save
-    #   redirect_to controller: 'posts', action: 'show', id: @post.id
-    # else
-    #   render :new, status: :unprocessable_entity
-    # end
+
+    logger.info "user_id: #{@current_user.id}"
+    logger.info "course_id: #{course_id}"
+    logger.info "title: #{post_params[:title]}"
+    logger.info "body: #{post_params[:body]}"
+
+    if @post.save
+      redirect_to controller: 'posts', action: 'show', id: @post.id
+      logger.info('saved')
+    else
+      render :new, status: :unprocessable_entity
+      logger.info('not saved')
+    end
   end
 
   private
   def post_params
-    params.require(:post).permit(:title, :body)
+    params.require(:post).permit(:course_id, :title, :body)
   end
 
 

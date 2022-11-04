@@ -16,7 +16,7 @@ Rails.application.routes.draw do
 
   # resources :posts
   # get "/courses/:id/posts", to: "courses#posts#index"
-  # post "/courses/:id/posts/new", to: "courses#posts#new"
+  post "/courses/:course_id/posts/new", to: "posts#create"
 
 
   # post "/posts/new", to: "posts#new"
