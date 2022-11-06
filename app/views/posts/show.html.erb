@@ -11,7 +11,7 @@
         <th></th>
       </tr>
       <tr>
-        <td><%= @current_user.name %></td>
+        <td><%= User.find(@post.user_id).name %></td>
         <td><%= @course.name %></td>
         <td><%= @post.title %></td>
         <td><%= @post.body %></td>
@@ -20,9 +20,37 @@
           <li class="nav-link"><%= link_to "Delete", course_post_path(@post), data: {
             turbo_method: :delete,
             turbo_confirm: "Are you sure?"
-          } %>
+          } %></li>
         </td>
       </tr>
     </table>
+
+    <a href=<%= new_course_post_comment_path(course_id: @course.id, post_id: @post.id)%>> New comment </a>
+
+    <% if @comments.nil?%>
+      <h2>No comments yet! </h2>
+    <% else %>
+
+      <table>
+        <tr>
+          <th>User</th>
+          <th>Comment</th>
+          <th></th>
+        </tr>
+
+          <% @comments.each do |comment|%>
+              <tr>
+            <td><%= User.find(comment.user_id).name %></td>
+            <td><%= comment.body %></td>
+            <td >
+              <a href= <%= course_post_comment_path(course_id: @course.id, post_id: @post.id, id: comment.id) %> >
+                Show Comment 
+              </a>
+            </td>
+            </tr>
+
+          <% end %>
+      </table>
+    <% end%>
   </div>
 </div>
