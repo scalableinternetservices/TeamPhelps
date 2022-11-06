@@ -1,0 +1,26 @@
+
+<div class="title">
+  <h3>Comment</h3>
+  <div id="comment-info">
+    <table>
+      <tr>
+        <th>User</th>
+        <th>Post</th>
+        <th>Body</th>
+        <th></th>
+      </tr>
+      <tr>
+        <td><%= User.find(@post.user_id).name %></td>
+        <td><a href = <%= course_post_path(id: @post.id)%>><%= @post.title %></a></td>
+        <td><%= @comment.body %></td>
+        <td>
+          <li class="nav-link"><%= link_to "Edit", edit_course_post_comment_path(@comment) %></li>
+          <li class="nav-link"><%= link_to "Delete", course_post_comment_path(@comment), data: {
+            turbo_method: :delete,
+            turbo_confirm: "Are you sure?"
+          } %></li>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
