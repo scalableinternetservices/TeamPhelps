@@ -9,7 +9,8 @@ Rails.application.routes.draw do
   post "/login", to: "users#login"
   get "/signup", to: "users#new"
   get "/logout", to: "users#logout"
-
+  get "/courses/:id/join", to: "courses#join", as: :join_course
+  get "/courses/:id/leave", to: "courses#leave", as: :leave_course
 
   resources :courses do
     resources :posts

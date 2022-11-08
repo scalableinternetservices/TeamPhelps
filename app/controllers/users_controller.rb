@@ -10,7 +10,7 @@ class UsersController < ApplicationController
       
       def show
         @user = User.find(params[:id])
-        @courses = Course.all
+        @courses = @user.courses
       end
 
       def login

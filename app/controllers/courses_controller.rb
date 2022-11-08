@@ -1,6 +1,6 @@
 class CoursesController < AuthenticatedController
     before_action :check_id
-    before_action :set_course, only: %i[ show edit update destroy ]
+    before_action :set_course, only: %i[ show edit update destroy join leave]
   
     # GET /posts or /posts.json
     def index
@@ -24,6 +24,14 @@ class CoursesController < AuthenticatedController
       @user = @current_user
 
     end
+
+    def leave
+      current_role = @course.roles.find_by(user_id: @current_user.id)
+      if current_role.role == 1
+        @course.roles.find_by(user_id: @current_user.id).destroy
+      end
+        redirect_to @current_user
+    end
   
     def create
       @course = Course.new(course_params)
@@ -40,6 +48,11 @@ class CoursesController < AuthenticatedController
           format.json { render json: @course.errors, status: :unprocessable_entity }
         end
       end
+    end
+
+    def join
+      @course.roles.create(user: @current_user, course: @course, role: 1)
+      redirect_to course_url(@course)
     end
   
     def update

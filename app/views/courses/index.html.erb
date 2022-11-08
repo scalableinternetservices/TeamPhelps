@@ -47,7 +47,13 @@
     <tr>
       <td><%= course.name %></td>
       <td></td>
-      <td><%= link_to "View course", course %></td>
+      <td>
+      <% if @current_user.courses.include?(course)%>
+      <%= link_to "View course", course %>
+      <%else%>
+      <%=link_to "Join course", join_course_path(course) %>
+      <%end%>
+      </td>
     </tr>
     <% end %>
   </table>
