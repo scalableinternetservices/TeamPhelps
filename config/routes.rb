@@ -11,9 +11,13 @@ Rails.application.routes.draw do
 
 
   resources :courses do
-    resources :posts
+    resources :posts do
+      resources :comments, only: [:edit, :show, :create, :update, :destroy, :new]
+    end
   end
 
   post "/courses/:course_id/posts/new", to: "posts#create"
+  post "/courses/:course_id/posts/:post_id/comments/new", to: "comments#create"
+
 
 end

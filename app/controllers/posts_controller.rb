@@ -10,7 +10,7 @@ class PostsController < AuthenticatedController
   end
 
   def show
-
+    @comments = Comment.where(post_id: @post.id)
   end
 
   def new
@@ -44,6 +44,14 @@ class PostsController < AuthenticatedController
     end
   end
 
+  def destroy
+      @post = Post.find(params[:id])
+      Comment.where(post_id: @post.id).delete_all
+      @post.destroy
+    
+      redirect_to course_path(@course), status: :see_other
+    end
+
   private
   def post_params
     params.require(:post).permit(:course_id, :title, :body)
@@ -54,17 +62,6 @@ class PostsController < AuthenticatedController
     @course = Course.find(@post.course_id)
   end
 
-
-  
-  #
-  # def destroy
-  #   # logger.info "Processing the request... "
-  #   @post = Post.find(params[:id])
-  #   @post.destroy
-  #
-  #   redirect_to root_path, status: :see_other
-  # end
-  #
 
 
 end
