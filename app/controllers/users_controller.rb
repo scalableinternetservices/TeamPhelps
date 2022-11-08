@@ -58,6 +58,11 @@ class UsersController < ApplicationController
         User.destroy(params[:id])
         redirect_to root_path, status: :see_other
       end
+
+      def logout
+        session[:current_user] = nil
+        redirect_to root_path
+      end
     
       private
       def user_params
