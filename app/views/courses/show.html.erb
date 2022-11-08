@@ -34,6 +34,7 @@
             turbo_confirm: "Are you sure?"
           } %> 
         </li>
+        <li><%= link_to "Logout", logout_path%> </li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
@@ -49,12 +50,20 @@
       <th>Name</th>
       <th>Email</th>
       <th>Role</th>
+      <th>Leave Course</th>
     </tr>
     <% @roles.each do |role|%>
     <tr>
       <td><%= link_to role.user.name, role.user%></td>
       <td><%= role.user.email%></td>
       <td><%= role_to_text role.role %></td>
+      <td>
+      <% if role.role == 0%>
+      <%= "Cannot leave course as instructor"%>
+      <% else %>
+      <%= link_to "Leave Course", leave_course_path(role.course)%>
+      <%end%>
+      </td>
     </tr>
     <% end %>
   </table>

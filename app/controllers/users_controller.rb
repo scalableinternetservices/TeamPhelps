@@ -10,7 +10,7 @@ class UsersController < ApplicationController
       
       def show
         @user = User.find(params[:id])
-        @courses = Course.all
+        @courses = @user.courses
       end
 
       def login
@@ -57,6 +57,11 @@ class UsersController < ApplicationController
       def destroy
         User.destroy(params[:id])
         redirect_to root_path, status: :see_other
+      end
+
+      def logout
+        session[:current_user] = nil
+        redirect_to root_path
       end
     
       private
