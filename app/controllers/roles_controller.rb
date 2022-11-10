@@ -16,7 +16,9 @@ class RolesController < ApplicationController
       @course = Course.find(params[:id])
       logger.info "User_id #{@user}"
       logger.info "Course_id #{@course}"
-      @role = Role.new(user: @user, course: @course, role: 1)
+      # @role = Role.new(user: @user, course: @course, role: 1)
+      @role.user = @user
+      @role.course = @course
 
       if @role.save
         redirect_to course_url(@course)

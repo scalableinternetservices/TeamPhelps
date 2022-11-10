@@ -1,26 +1,27 @@
 <body class='login-body'>
-  <div class='loginbox'>
+<div class='loginbox'>
   <h1>Sign-up</h1>
 
   <%= form_with model: @user do |form| %>
-      <div>
-        <%= form.label :name %><br>
-        <%= form.text_field :name %>
-        <% @user.errors.full_messages_for(:name).each do |message| %>
-          <div><%= message %></div>
-        <% end %>
-      </div>
-    
-      <div>
-        <%= form.label :email %><br>
-        <%= form.text_field :email %><br>
-        <% @user.errors.full_messages_for(:email).each do |message| %>
-          <div><%= message %></div>
-        <% end %>
-      </div>
-    
-      <div>
-        <%= form.submit %>
-      </div>
-    <% end %>
+    <div>
+      <%= form.label :name %><br>
+      <%= form.text_field :name %>
+      <% @user.errors.full_messages_for(:name).each do |message| %>
+        <div><%= message %></div>
+      <% end %>
+    </div>
+
+    <div>
+      <%= form.label :email %><br>
+      <%= form.text_field :email %><br>
+      <% @user.errors.full_messages_for(:email).each do |message| %>
+        <div><%= message %></div>
+      <% end %>
+    </div>
+
+    <div>
+      <%= form.submit %>
+    </div>
+  <% end %>
+</div>
 </body>

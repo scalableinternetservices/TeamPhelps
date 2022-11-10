@@ -1,9 +1,8 @@
 class PostsController < AuthenticatedController
 
-
   before_action :set_post, only: %i[ show edit update destroy ]
 
-  
+
 
   def index
     @posts = Post.all
@@ -21,7 +20,8 @@ class PostsController < AuthenticatedController
     course_id = params[:course_id]
 
     @post = Post.new(user_id: @current_user.id, course_id: course_id,
-                        title: post_params[:title], body: post_params[:body])
+                     title: post_params[:title], body: post_params[:body])
+
 
     if @post.save
       redirect_to controller: 'posts', action: 'show', id: @post.id
@@ -32,25 +32,40 @@ class PostsController < AuthenticatedController
 
   def edit
     # @post = Post.find_by(id: params[:id])
+    @course = @post.course_id
+    @role = Role.where(course_id: @course, user_id: @current_user).first
+
+    logger.info "EDITING ..."
+    logger.info "ROLE.role #{@role.role}"
+    logger.info "helper output #{helpers.is_instructor?(@role.role)}"
+    if helpers.is_instructor?(@role.role)
+      logger.info "IS INSTRUCTOR"
+    else
+      logger.info "STUDENT"
+
+    end
+    render :edit, status: :unprocessable_entity
   end
 
   def update
     # @post = Post.find_by(id: params[:id])
-    if @post.update(post_params)
-      redirect_to course_post_path @post
-    else
-      render :edit, status: :unprocessable_entity
-
+    if ActionController::Base.helpers.is_instructor?(@role.role)
+      logger.info "IS INSTRUCTOR"
+      if @post.update(post_params)
+        redirect_to course_post_path @post
+      else
+        render :edit, status: :unprocessable_entity
+      end
     end
   end
 
   def destroy
-      @post = Post.find(params[:id])
-      Comment.where(post_id: @post.id).delete_all
-      @post.destroy
-    
-      redirect_to course_path(@course), status: :see_other
-    end
+    @post = Post.find(params[:id])
+    Comment.where(post_id: @post.id).delete_all
+    @post.destroy
+
+    redirect_to course_path(@course), status: :see_other
+  end
 
   private
   def post_params

@@ -1,3 +1,3 @@
-<!--<h1>Adding student to class <%#= @course?? %></h1>-->
+<h1>Adding student to class <%= Course.find(params[:id]).name%></h1>
 
-<%#= render "form", role: @role??, user:@current_user??, url: request.original_url %>
+<%= render "form", role: @role, url: request.original_url %>
