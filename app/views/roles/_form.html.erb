@@ -1,7 +1,7 @@
-<%= form_with model: post, url: url do |form| %>
+<%= form_with model: [role, user], url: url do |form| %>
   <div>
-    <%= form.label :title %><br>
-    <%= form.text_field :title %>
+    <%= form.label :email %><br>
+    <%= form.text_field :e %>
     <% @post.errors.full_messages_for(:title).each do |message| %>
           <div class="error_msg"><%= message %></div><br>
     <% end %>
