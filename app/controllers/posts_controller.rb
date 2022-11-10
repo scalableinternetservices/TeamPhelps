@@ -24,7 +24,7 @@ class PostsController < AuthenticatedController
                         title: post_params[:title], body: post_params[:body])
 
     if @post.save
-      redirect_to controller: 'posts', action: 'show', id: @post.id
+      redirect_to controller: 'courses', action: 'show', id: course_id
     else
       render :new, status: :unprocessable_entity
     end
@@ -37,7 +37,7 @@ class PostsController < AuthenticatedController
   def update
     # @post = Post.find_by(id: params[:id])
     if @post.update(post_params)
-      redirect_to course_post_path @post
+      redirect_to controller: 'courses', action: 'show', id: @post.course_id
     else
       render :edit, status: :unprocessable_entity
 
@@ -58,6 +58,7 @@ class PostsController < AuthenticatedController
   end
 
   def set_post
+    @user = @current_user
     @post = Post.find(params[:id])
     @course = Course.find(@post.course_id)
   end

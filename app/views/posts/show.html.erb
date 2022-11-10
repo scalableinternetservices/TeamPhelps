@@ -1,3 +1,37 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#"><%= @user.name %>'s Conclave</a?
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><li><%= link_to "Home", user_path(@user) %></li></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><%= link_to "Back to Course", course_path(@course) %> </li>
+        <li><%= link_to "Create new post", new_course_post_path(@course) %> </li>
+      <% if is_instructor? @user_role or @user.id == @post.user_id%> 
+        <li class="nav-link"><%= link_to "Edit Post", edit_course_post_path(@course) %></li>
+        <li class="nav-link"><%= link_to "Delete Post", course_post_path(@course), data: {
+            turbo_method: :delete,
+            turbo_confirm: "Are you sure?"
+          } %> 
+        </li>
+      <% end %>
+        <li><%= link_to "Logout", logout_path%> </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
 
 <div class="title">
   <h3>Post</h3>
@@ -5,29 +39,19 @@
     <table>
       <tr>
         <th>User</th>
-        <th>Course</th>
         <th>Title</th>
         <th>Body</th>
-        <th></th>
       </tr>
       <tr>
         <td><%= User.find(@post.user_id).name %></td>
-        <td><%= @course.name %></td>
         <td><%= @post.title %></td>
         <td><%= @post.body %></td>
-        <td>
-          <li class="nav-link"><%= link_to "Edit", edit_course_post_path(@post) %></li>
-          <li class="nav-link"><%= link_to "Delete", course_post_path(@post), data: {
-            turbo_method: :delete,
-            turbo_confirm: "Are you sure?"
-          } %></li>
-        </td>
       </tr>
     </table>
 
     <a href=<%= new_course_post_comment_path(course_id: @course.id, post_id: @post.id)%>> New comment </a>
 
-    <% if @comments.nil?%>
+    <% if @comments.length() < 1 %>
       <h2>No comments yet! </h2>
     <% else %>
 
@@ -35,18 +59,21 @@
         <tr>
           <th>User</th>
           <th>Comment</th>
-          <th></th>
         </tr>
 
           <% @comments.each do |comment|%>
               <tr>
             <td><%= User.find(comment.user_id).name %></td>
             <td><%= comment.body %></td>
-            <td >
-              <a href= <%= course_post_comment_path(course_id: @course.id, post_id: @post.id, id: comment.id) %> >
-                Show Comment 
-              </a>
-            </td>
+            <td>
+              <ul>
+              <li class="nav-link"><%= link_to "Edit", edit_course_post_comment_path(@course,@post,comment) %></li>
+              <li class="nav-link"><%= link_to "Delete", course_post_comment_path(@course,@post,comment), data: {
+                turbo_method: :delete,
+                turbo_confirm: "Are you sure?"
+              } %></li>
+              </ul>
+              </td>
             </tr>
 
           <% end %>
