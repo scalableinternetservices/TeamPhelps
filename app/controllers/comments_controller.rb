@@ -19,7 +19,7 @@ class CommentsController < AuthenticatedController
                          body: comment_params[:body])
   
       if @comment.save
-        redirect_to controller: 'comments', action: 'show', id: @comment.id
+        redirect_to controller: 'posts', action: 'show', id: post_id
       else
         render :new, status: :unprocessable_entity
       end
@@ -30,7 +30,7 @@ class CommentsController < AuthenticatedController
   
     def update
       if @comment.update(comment_params)
-        redirect_to course_post_comment_path @comment
+        redirect_to controller: 'posts', action: 'show', id: @comment.post_id
       else
         render :edit, status: :unprocessable_entity
   

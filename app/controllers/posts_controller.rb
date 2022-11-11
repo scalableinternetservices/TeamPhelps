@@ -24,7 +24,7 @@ class PostsController < AuthenticatedController
 
 
     if @post.save
-      redirect_to controller: 'posts', action: 'show', id: @post.id
+      redirect_to controller: 'courses', action: 'show', id: course_id
     else
       render :new, status: :unprocessable_entity
     end
@@ -61,6 +61,7 @@ class PostsController < AuthenticatedController
   end
 
   def set_post
+    @user = @current_user
     @post = Post.find(params[:id])
     @course = Course.find(@post.course_id)
     @role = Role.where(course_id: @course, user_id: @current_user).first
