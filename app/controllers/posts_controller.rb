@@ -1,5 +1,5 @@
 class PostsController < AuthenticatedController
-
+  before_action :check_id
   before_action :set_post, only: %i[ show edit update destroy ]
 
 
@@ -64,6 +64,10 @@ class PostsController < AuthenticatedController
     @post = Post.find(params[:id])
     @course = Course.find(@post.course_id)
     @role = Role.where(course_id: @course, user_id: @current_user).first
+  end
+
+  def check_id
+    return render_not_found unless (!params[:id] or Post.find_by(id: params[:id]))
   end
 
 
