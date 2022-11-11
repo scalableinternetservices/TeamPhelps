@@ -4,21 +4,16 @@ class RolesController < ApplicationController
   end
 
   def new
-    logger.info "Instantiating Role"
     @role = Role.new
   end
 
   def create
-    @user_email = role_params[:user_email].downcase!
-    @user = User.where(email: @user_email)
-    logger.info "role #{@role}"
-    if not @user.empty?
+    @user_email = role_params[:user_email].downcase
+    @user = User.where(email: @user_email).first
+
+    if @user
       @course = Course.find(params[:id])
-      logger.info "User_id #{@user}"
-      logger.info "Course_id #{@course}"
-      # @role = Role.new(user: @user, course: @course, role: 1)
-      @role.user = @user
-      @role.course = @course
+      @role = Role.new(user: @user, course: @course, role: 1)
 
       if @role.save
         redirect_to course_url(@course)
@@ -26,6 +21,7 @@ class RolesController < ApplicationController
         render :new, status: :unprocessable_entity
       end
     else
+      # needs to be fixed since @role is Nil
       @role.errors.add(:user_email, "User #{@user_email} doesn't exist!")
     end
 
