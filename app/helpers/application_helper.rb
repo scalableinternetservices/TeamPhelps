@@ -6,11 +6,11 @@ module ApplicationHelper
       end
   
     def is_instructor?(role_id)
-        $roles[role_id] == 0
+        role_id == 0
     end
 
     def is_student?(role_id)
-        $roles[role_id] == 1
+        role_id == 1
     end
 
 end

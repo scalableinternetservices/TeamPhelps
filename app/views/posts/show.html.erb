@@ -1,6 +1,7 @@
 
 <div class="title">
   <h3>Post</h3>
+  <br>
   <div id="post-info">
     <table>
       <tr>
@@ -16,41 +17,56 @@
         <td><%= @post.title %></td>
         <td><%= @post.body %></td>
         <td>
-          <li class="nav-link"><%= link_to "Edit", edit_course_post_path(@post) %></li>
-          <li class="nav-link"><%= link_to "Delete", course_post_path(@post), data: {
-            turbo_method: :delete,
-            turbo_confirm: "Are you sure?"
-          } %></li>
+          <% if is_instructor?(@role.role) %>
+            <li class="nav-link"><%= link_to "Edit", edit_course_post_path(@post) %></li>
+            <li class="nav-link"><%= link_to "Delete", course_post_path(@post), data: {
+              turbo_method: :delete,
+              turbo_confirm: "Are you sure?"
+            } %></li>
+          <% end %>
         </td>
       </tr>
     </table>
+    <div>
 
-    <a href=<%= new_course_post_comment_path(course_id: @course.id, post_id: @post.id)%>> New comment </a>
+      <a href=<%= new_course_post_comment_path(course_id: @course.id, post_id: @post.id)%>> New comment </a>
+      <br>
+      <br>
+      <% if @comments.nil?%>
+        <h2>No comments yet! </h2>
+      <% else %>
 
-    <% if @comments.nil?%>
-      <h2>No comments yet! </h2>
-    <% else %>
-
-      <table>
-        <tr>
-          <th>User</th>
-          <th>Comment</th>
-          <th></th>
-        </tr>
+        <table>
+          <tr>
+            <th>User</th>
+            <th>Comment</th>
+            <th></th>
+          </tr>
 
           <% @comments.each do |comment|%>
-              <tr>
-            <td><%= User.find(comment.user_id).name %></td>
-            <td><%= comment.body %></td>
-            <td >
-              <a href= <%= course_post_comment_path(course_id: @course.id, post_id: @post.id, id: comment.id) %> >
-                Show Comment 
-              </a>
-            </td>
+            <tr>
+              <td><%= User.find(comment.user_id).name %></td>
+              <td><%= comment.body %></td>
+              <td >
+                <a href= <%= course_post_comment_path(course_id: @course.id, post_id: @post.id, id: comment.id) %> >
+                  Show Comment
+                </a>
+              </td>
             </tr>
 
           <% end %>
-      </table>
-    <% end%>
+        </table>
+      <% end%>
+    </div>
   </div>
 </div>
+
+<style>
+    .title{
+        padding-left: 50px;
+    }
+
+    td{
+        padding-right: 30px;
+    }
+</style>

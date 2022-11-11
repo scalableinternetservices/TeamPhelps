@@ -31,32 +31,20 @@ class PostsController < AuthenticatedController
   end
 
   def edit
-    # @post = Post.find_by(id: params[:id])
-    @course = @post.course_id
-    @role = Role.where(course_id: @course, user_id: @current_user).first
-
-    logger.info "EDITING ..."
-    logger.info "ROLE.role #{@role.role}"
-    logger.info "helper output #{helpers.is_instructor?(@role.role)}"
-    if helpers.is_instructor?(@role.role)
-      logger.info "IS INSTRUCTOR"
-    else
-      logger.info "STUDENT"
-
-    end
-    render :edit, status: :unprocessable_entity
   end
 
   def update
-    # @post = Post.find_by(id: params[:id])
-    if ActionController::Base.helpers.is_instructor?(@role.role)
-      logger.info "IS INSTRUCTOR"
+
+    if helpers.is_instructor?(@role.role)
       if @post.update(post_params)
         redirect_to course_post_path @post
       else
         render :edit, status: :unprocessable_entity
       end
+    else
+      redirect_to course_post_path @post
     end
+
   end
 
   def destroy
@@ -75,6 +63,7 @@ class PostsController < AuthenticatedController
   def set_post
     @post = Post.find(params[:id])
     @course = Course.find(@post.course_id)
+    @role = Role.where(course_id: @course, user_id: @current_user).first
   end
 
 
