@@ -15,10 +15,11 @@
   <!-- Collect the nav links, forms, and other content for toggling -->
   <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
     <ul class="nav navbar-nav">
-      <li><a href="#">Home</a></li>
+      <li><%= link_to "Home", user_path(@user) %></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <li><%= link_to "Create course", new_course_path %> </li>
+      <li><%= link_to "Find courses", courses_path %> </li>
       <li><%= link_to "Edit User", edit_user_path(@user) %></li>
       <li><%= link_to "Delete User", user_path(@user), data: {
           turbo_method: :delete,
@@ -34,14 +35,18 @@
 <h3> My Classes </h3>
 
 <div class='list-group' >
+<% if @courses.length() > 0 %>
 <ul>
   <% @courses.each do |course| %>
     <button style="display:flex;" type="button" class="list-group-item list-group-item-action" aria-current="true">
       <%= link_to course.name, course %>
-      <p> "Join Course not yet implemented" </p>
     </button>
   <% end %>
 </ul>
+<% else %>
+    <p> Looks like you haven't registered for any courses! Please click <%= link_to "here", courses_path %> to find a course to join. </p>
+<% end %>
+
 </div>
 
 <!-- 
