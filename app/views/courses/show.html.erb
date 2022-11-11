@@ -52,11 +52,13 @@
       <td><%= link_to post.title, course_post_path(@course,post) %></td>
       <td><%= post.body %></td>
       <td>
+        <% if is_instructor?(@role.role) or (post.user_id == @current_user.id)%>
           <li class="nav-link"><%= link_to "Edit", edit_course_post_path(@course,post) %></li>
           <li class="nav-link"><%= link_to "Delete", course_post_path(@course,post.id), data: {
             turbo_method: :delete,
             turbo_confirm: "Are you sure?"
           } %></li>
+        <% end %>
       </td>
     </tr>
     <% end %>

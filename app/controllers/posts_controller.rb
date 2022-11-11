@@ -41,7 +41,7 @@ class PostsController < AuthenticatedController
 
     if helpers.is_instructor?(@role.role) or (@post.user_id == @current_user.id)
       if @post.update(post_params)
-        redirect_to course_post_path @post
+        redirect_to controller: 'courses', action: 'show', id: @post.course_id
       else
         render :edit, status: :unprocessable_entity
       end
