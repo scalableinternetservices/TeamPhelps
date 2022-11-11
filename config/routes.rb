@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   get "/courses/:id/join", to: "courses#join", as: :join_course
   get "/courses/:id/leave", to: "courses#leave", as: :leave_course
   get "/courses/:id/new_student", to: "roles#new"
+  get "/courses/:id/remove_student", to: "roles#remove_student"
 
   resources :courses do
     resources :posts do

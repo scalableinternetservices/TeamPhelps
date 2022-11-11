@@ -61,7 +61,7 @@
       <% if role.role == 0%>
       <%= "Cannot leave course as instructor"%>
       <% else %>
-      <%= link_to "Leave Course", leave_course_path(role.course)%>
+      <%= link_to "Remove", {:controller => "roles", action: :remove_student, user_id: role.user}%>
       <%end%>
       </td>
     </tr>
@@ -71,6 +71,8 @@
   <div>
     <% if @role.role ==0 %>
       <%= link_to "Add a student", new_student_course_path%>
+    <% else %>
+      <%= link_to "Leave Course", leave_course_path(role.course)%>
     <% end %>
   </div>
   <br/>

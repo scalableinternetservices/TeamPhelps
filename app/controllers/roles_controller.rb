@@ -27,6 +27,20 @@ class RolesController < ApplicationController
 
   end
 
+  def remove_student
+    logger.info "REMOVE USER"
+    @course = Course.find(params[:id])
+    @user = User.find(params[:user_id])
+    logger.info "user : #{@user}"
+    @role = Role.where(user:@user, course: @course).first
+    logger.info "role : #{@role}"
+    @role.destroy
+
+    respond_to do |format|
+      format.html { redirect_to course_url(@course), notice: "#{@user} was successfully removed from #{@course}." }
+      format.json { head :no_content }
+    end
+  end
 
   private
 
