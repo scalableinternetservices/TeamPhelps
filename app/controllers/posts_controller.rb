@@ -10,6 +10,7 @@ class PostsController < AuthenticatedController
 
   def show
     @comments = Comment.where(post_id: @post.id)
+    @post_user = User.find(@post.user_id)
   end
 
   def new
@@ -31,11 +32,14 @@ class PostsController < AuthenticatedController
   end
 
   def edit
+    unless helpers.is_instructor?(@role.role) or (@post.user_id == @current_user.id)
+      render_not_found
+    end
   end
 
   def update
 
-    if helpers.is_instructor?(@role.role)
+    if helpers.is_instructor?(@role.role) or (@post.user_id == @current_user.id)
       if @post.update(post_params)
         redirect_to course_post_path @post
       else
@@ -48,11 +52,12 @@ class PostsController < AuthenticatedController
   end
 
   def destroy
-    @post = Post.find(params[:id])
-    Comment.where(post_id: @post.id).delete_all
-    @post.destroy
-
-    redirect_to course_path(@course), status: :see_other
+    if helpers.is_instructor?(@role.role) or (@post.user_id == @current_user.id)
+      @post = Post.find(params[:id])
+      Comment.where(post_id: @post.id).delete_all
+      @post.destroy
+      redirect_to course_path(@course), status: :see_other
+    end
   end
 
   private
@@ -67,7 +72,7 @@ class PostsController < AuthenticatedController
   end
 
   def check_id
-    return render_not_found unless (!params[:id] or Post.find_by(id: params[:id]))
+    render_not_found unless (!params[:id] or Post.find_by(id: params[:id]))
   end
 
 

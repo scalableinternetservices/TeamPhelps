@@ -1,4 +1,4 @@
-class RolesController < ApplicationController
+class RolesController < AuthenticatedController
 
   def index
   end
@@ -28,12 +28,9 @@ class RolesController < ApplicationController
   end
 
   def remove_student
-    logger.info "REMOVE USER"
     @course = Course.find(params[:id])
     @user = User.find(params[:user_id])
-    logger.info "user : #{@user}"
     @role = Role.where(user:@user, course: @course).first
-    logger.info "role : #{@role}"
     @role.destroy
 
     respond_to do |format|

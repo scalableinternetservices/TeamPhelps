@@ -12,12 +12,12 @@
         <th></th>
       </tr>
       <tr>
-        <td><%= User.find(@post.user_id).name %></td>
+        <td><%= @post_user.name %></td>
         <td><%= @course.name %></td>
         <td><%= @post.title %></td>
         <td><%= @post.body %></td>
         <td>
-          <% if is_instructor?(@role.role) %>
+          <% if is_instructor?(@role.role) or (@post_user.id == @current_user.id)%>
             <li class="nav-link"><%= link_to "Edit", edit_course_post_path(@post) %></li>
             <li class="nav-link"><%= link_to "Delete", course_post_path(@post), data: {
               turbo_method: :delete,
