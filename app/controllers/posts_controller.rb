@@ -15,11 +15,15 @@ class PostsController < AuthenticatedController
 
   def new
     @post = Post.new
+    @user = @current_user
+    @course = Course.find(params[:course_id])
+
   end
 
   def create
+    @user = @current_user
     course_id = params[:course_id]
-
+    @course = Course.find(course_id)
     @post = Post.new(user_id: @current_user.id, course_id: course_id,
                      title: post_params[:title], body: post_params[:body])
 

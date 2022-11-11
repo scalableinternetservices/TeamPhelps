@@ -1,3 +1,37 @@
-<h1>Editing  Comment: <%= @comment.body %></h1>
+<nav class="navbar navbar-default">
+<div class="container-fluid">
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="#"><%= @user.name %>'s Conclave</a>
+  </div>
 
-<%= render "form", comment: @comment, url: course_post_comment_path(@comment) %>
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <ul class="nav navbar-nav">
+      <li><%= link_to "Home", user_path(@user) %></li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+        <li><%= link_to @course.name, course_path(@course) %> </li>
+        <li><%= link_to "New comment",         new_course_post_comment_path(course_id: @course.id, post_id: @post.id) %> </li>
+        <% if is_instructor? @user_role or @user.id == @post.user_id%> 
+        <li class="nav-link"><%= link_to "Delete Comment", course_post_comment_path(@course,@post,@comment), data: {
+          turbo_method: :delete,
+          turbo_confirm: "Are you sure?"
+        } %></li>
+        <% end %>
+        <li><%= link_to "Logout", logout_path%> </li>
+    </ul>
+  </div><!-- /.navbar-collapse -->
+</div><!-- /.container-fluid -->
+</nav>
+<div class='container'>
+    <h1>Edit  Comment</h1>
+
+    <%= render "form", comment: @comment, url: course_post_comment_path(@comment) %>
+</div>
