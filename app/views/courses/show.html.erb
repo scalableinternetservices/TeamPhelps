@@ -69,7 +69,9 @@
   </table>
 </div>
   <div>
-    <%= link_to "Add a student", new_course_path%>
+    <% if @role.role ==0 %>
+      <%= link_to "Add a student", new_student_course_path%>
+    <% end %>
   </div>
   <br/>
 </div>
