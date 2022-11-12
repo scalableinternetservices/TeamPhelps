@@ -30,33 +30,32 @@
   </div><!-- /.container-fluid -->
 </nav>
 
-<div class='container'>
 <p style="color: green"><%= notice %></p>
 
-<div class="panel panel-default">
-  <!-- Default panel contents -->
-  <div class="panel-heading">Courses</div>
-  <!-- Table -->
-  <table class="table">
-    <tr>
-      <th>Course Name</th>
-      <th>Instructor</th>
-      <th>Access</th>
-    </tr>
-    <% @courses.each do |course| %>
-    <tr>
-      <td><%= course.name %></td>
-      <td></td>
-      <td>
-      <% if @current_user.courses.include?(course)%>
-      <%= link_to "View course", course %>
-      <%else%>
-      <%=link_to "Join course", join_course_path(course) %>
-      <%end%>
-      </td>
-    </tr>
-    <% end %>
-  </table>
-</div>
-
+<div class='container-2'>
+  <div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading">Courses</div>
+    <!-- Table -->
+    <table class="table">
+      <tr>
+        <th>Course Name</th>
+        <th>Instructor</th>
+        <th>Access</th>
+      </tr>
+      <% @courses.each do |course| %>
+      <tr>
+        <td><%= course.name %></td>
+        <td></td>
+        <td>
+        <% if @current_user.courses.include?(course)%>
+        <%= link_to "View course", course %>
+        <%else%>
+        <%=link_to "Join course", join_course_path(course) %>
+        <%end%>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
 </div>

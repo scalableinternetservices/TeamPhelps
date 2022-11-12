@@ -18,7 +18,7 @@
     </ul>
     <ul class="nav navbar-nav navbar-right">
         <li><%= link_to @course.name, course_path(@course) %> </li>
-        <li><%= link_to "New comment",         new_course_post_comment_path(course_id: @course.id, post_id: @post.id) %> </li>
+        <li><%= link_to "New comment",new_course_post_comment_path(course_id: @course.id, post_id: @post.id) %> </li>
         <% if is_instructor? @user_role or @user.id == @post.user_id%> 
         <li class="nav-link"><%= link_to "Delete Comment", course_post_comment_path(@course,@post,@comment), data: {
           turbo_method: :delete,
