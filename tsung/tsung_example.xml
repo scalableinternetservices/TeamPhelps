@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
-<!DOCTYPE tsung SYSTEM "/usr/local/share/tsung/tsung-1.0.dtd" [] >
+<!DOCTYPE tsung SYSTEM "/usr/local/share/tsung/tsung-1.0.dtd" [
+    <!ENTITY serverConfig SYSTEM "server_config.xml">
+  ] >
 <tsung loglevel="notice">
   <clients>
     <client host="localhost" maxusers="32768" use_controller_vm="true"/>
   </clients>
 
-  <servers>
-    <server host="localhost" port="3000" type="tcp"/>
-  </servers>
+  &serverConfig;
 
   <load>
     <arrivalphase phase="1" duration="5" unit="second">
