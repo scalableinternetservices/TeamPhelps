@@ -2,11 +2,11 @@
 <!DOCTYPE tsung SYSTEM "/usr/local/share/tsung/tsung-1.0.dtd" [] >
 <tsung loglevel="notice">
   <clients>
-    <client host="localhost" maxusers="32768" use_controller_vm="true"/>
+    <client host="localhost" maxusers="2" use_controller_vm="true"/>
   </clients>
 
   <servers>
-    <server host="yuval.eba-rpinrm9x.us-west-2.elasticbeanstalk.com" port="80" type="tcp"/>
+    <server host="localhost" port="3000" type="tcp"/>
   </servers>
 
   <load>
@@ -49,17 +49,29 @@
 
   <sessions>
     <session name="example" type="ts_http" weight="1">
-      <setdynvars sourcetype="file" fileid="users" delimiter=";" order="iter">
+      <!-- <setdynvars sourcetype="file" fileid="users" delimiter=";" order="iter">
         <var name="username"/>
         <var name="user_email"/>
+      </setdynvars> -->
+      <setdynvars sourcetype="random_string" length="16">
+        <var name="username" />
       </setdynvars>
+      <setdynvars sourcetype="eval"
+          code="fun({Pid,DynVars})->
+          {ok,Val}=ts_dynvars:lookup(username,DynVars),
+          &lt;&lt;Val/binary, &quot;@example.com&quot;&gt;&gt; end.">
+        <var name="user_email" />
+        </setdynvars>
       <request>
         <http url="/" version="1.0" method="GET"></http>
       </request>
       <request subst="true">
+        <dyn_variable name="redirect" re="Location: (http://.*)\r"/>
         <http url="/users?user[name]=%%_username%%&amp;user[email]=%%_user_email%%" version="1.0" method="POST"></http>
+      </request>
+      <request subst="true">
+        <http url="%%_redirect%%" method="GET"></http>
       </request>
     </session>
   </sessions>
-<sessions>
 </tsung>
