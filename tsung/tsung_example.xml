@@ -2,7 +2,7 @@
 <!DOCTYPE tsung SYSTEM "/usr/local/share/tsung/tsung-1.0.dtd" [] >
 <tsung loglevel="notice">
   <clients>
-    <client host="localhost" maxusers="2" use_controller_vm="true"/>
+    <client host="localhost" maxusers="32768" use_controller_vm="true"/>
   </clients>
 
   <servers>
