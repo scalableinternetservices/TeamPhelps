@@ -55,6 +55,7 @@
           code="fun({Pid,DynVars})->
           {ok,Val}=ts_dynvars:lookup(username,DynVars),
           &lt;&lt;Val/binary, &quot;@example.com&quot;&gt;&gt; end.">
+        <!-- Create user_email based on username variable -->
         <var name="user_email" />
         </setdynvars>
       <request>
