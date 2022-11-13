@@ -44,22 +44,22 @@
 
   <options>
     <option name="global_ack_timeout" value="2000"/>
-	 <option name="file_server" id="users" value="users.csv"/>
+   <option name="file_server" id="users" value="users.csv"/>
   </options>
 
   <sessions>
     <session name="example" type="ts_http" weight="1">
-	<setdynvars sourcetype="file" fileid="users" delimiter=";" order="iter">
- 		<var name="username"/>
- 		<var name="user_email"/>
-	</setdynvars>
-	<request>
-		<http url="/" version="1.0" method="GET"></http>
-	</request>
-		<request subst="true">
-		<http url="/users?user[name]=%%_username%%&amp;user[email]=%%_user_email%%" version="1.0" method="POST">
-	</http>
-</request>
-</session>
+      <setdynvars sourcetype="file" fileid="users" delimiter=";" order="iter">
+        <var name="username"/>
+        <var name="user_email"/>
+      </setdynvars>
+      <request>
+        <http url="/" version="1.0" method="GET"></http>
+      </request>
+      <request subst="true">
+        <http url="/users?user[name]=%%_username%%&amp;user[email]=%%_user_email%%" version="1.0" method="POST"></http>
+      </request>
+    </session>
   </sessions>
+<sessions>
 </tsung>
