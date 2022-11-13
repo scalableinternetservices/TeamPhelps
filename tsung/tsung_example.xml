@@ -44,15 +44,10 @@
 
   <options>
     <option name="global_ack_timeout" value="2000"/>
-   <option name="file_server" id="users" value="users.csv"/>
   </options>
 
   <sessions>
     <session name="example" type="ts_http" weight="1">
-      <!-- <setdynvars sourcetype="file" fileid="users" delimiter=";" order="iter">
-        <var name="username"/>
-        <var name="user_email"/>
-      </setdynvars> -->
       <setdynvars sourcetype="random_string" length="16">
         <var name="username" />
       </setdynvars>
