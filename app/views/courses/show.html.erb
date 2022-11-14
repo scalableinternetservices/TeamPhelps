@@ -52,11 +52,13 @@
       <td><%= link_to post.title, course_post_path(@course,post) %></td>
       <td><%= post.body %></td>
       <td>
+        <% if is_instructor?(@role.role) or (post.user_id == @current_user.id)%>
           <li class="nav-link"><%= link_to "Edit", edit_course_post_path(@course,post) %></li>
           <li class="nav-link"><%= link_to "Delete", course_post_path(@course,post.id), data: {
             turbo_method: :delete,
             turbo_confirm: "Are you sure?"
           } %></li>
+        <% end %>
       </td>
     </tr>
     <% end %>
@@ -81,15 +83,22 @@
       <td><%= role_to_text role.role %></td>
       <td>
       <% if role.role == 0%>
-      <%= "Cannot leave course as instructor"%>
-      <% else %>
-      <%= link_to "Leave Course", leave_course_path(role.course)%>
+        <%= "Cannot leave course as instructor"%>
+      <%end%>
+      <% if @role.role == 0 and role.role == 1 %>
+        <%= link_to "Remove", {:controller => "roles", action: :remove_student, user_id: role.user}%>
       <%end%>
       </td>
     </tr>
     <% end %>
   </table>
 </div>
-
-<br/>
+  <div>
+    <% if @role.role ==0 %>
+      <%= link_to "Add a student", new_student_course_path%>
+    <% else %>
+      <%= link_to "Leave Course", leave_course_path(@role.course)%>
+    <% end %>
+  </div>
+  <br/>
 </div>

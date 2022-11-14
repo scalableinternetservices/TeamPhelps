@@ -1,9 +1,8 @@
 class PostsController < AuthenticatedController
-
-
+  before_action :check_id
   before_action :set_post, only: %i[ show edit update destroy ]
 
-  
+
 
   def index
     @posts = Post.all
@@ -11,6 +10,7 @@ class PostsController < AuthenticatedController
 
   def show
     @comments = Comment.where(post_id: @post.id)
+    @post_user = User.find(@post.user_id)
   end
 
   def new
@@ -21,7 +21,8 @@ class PostsController < AuthenticatedController
     course_id = params[:course_id]
 
     @post = Post.new(user_id: @current_user.id, course_id: course_id,
-                        title: post_params[:title], body: post_params[:body])
+                     title: post_params[:title], body: post_params[:body])
+
 
     if @post.save
       redirect_to controller: 'courses', action: 'show', id: course_id
@@ -31,26 +32,33 @@ class PostsController < AuthenticatedController
   end
 
   def edit
-    # @post = Post.find_by(id: params[:id])
+    unless helpers.is_instructor?(@role.role) or (@post.user_id == @current_user.id)
+      render_not_found
+    end
   end
 
   def update
-    # @post = Post.find_by(id: params[:id])
-    if @post.update(post_params)
-      redirect_to controller: 'courses', action: 'show', id: @post.course_id
-    else
-      render :edit, status: :unprocessable_entity
 
+    if helpers.is_instructor?(@role.role) or (@post.user_id == @current_user.id)
+      if @post.update(post_params)
+        redirect_to controller: 'courses', action: 'show', id: @post.course_id
+      else
+        render :edit, status: :unprocessable_entity
+      end
+    else
+      redirect_to course_post_path @post
     end
+
   end
 
   def destroy
+    if helpers.is_instructor?(@role.role) or (@post.user_id == @current_user.id)
       @post = Post.find(params[:id])
       Comment.where(post_id: @post.id).delete_all
       @post.destroy
-    
       redirect_to course_path(@course), status: :see_other
     end
+  end
 
   private
   def post_params
@@ -61,6 +69,11 @@ class PostsController < AuthenticatedController
     @user = @current_user
     @post = Post.find(params[:id])
     @course = Course.find(@post.course_id)
+    @role = Role.where(course_id: @course, user_id: @current_user).first
+  end
+
+  def check_id
+    render_not_found unless (!params[:id] or Post.find_by(id: params[:id]))
   end
 
 

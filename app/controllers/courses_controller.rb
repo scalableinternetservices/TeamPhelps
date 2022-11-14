@@ -13,8 +13,10 @@ class CoursesController < AuthenticatedController
       @roles = Role.where(course_id: @course.id)
       #Temporary variable for the navbar, until we find a better solution
       @user = @current_user
-      @user_role = Role.where(user_id: @user.id, course_id: @course.id)
+
+      @role = Role.where(user_id: @user, course_id:@course.id).first
       @posts = Post.where(course_id: @course.id)
+
     end
   
     def new

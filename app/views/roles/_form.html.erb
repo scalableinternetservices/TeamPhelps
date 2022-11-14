@@ -1,0 +1,13 @@
+<%= form_with model: role, url: url do |form| %>
+  <div>
+    <%= form.label "user email" %><br>
+    <%= form.text_field :user_email %>
+    <% role.errors.full_messages_for(:user_email).each do |message| %>
+          <div class="error_msg"><%= message %></div><br>
+    <% end %>
+  </div>
+  <br>
+  <div>
+    <%= form.submit "Add"%>
+  </div>
+<% end %>

@@ -11,6 +11,8 @@ Rails.application.routes.draw do
   get "/logout", to: "users#logout"
   get "/courses/:id/join", to: "courses#join", as: :join_course
   get "/courses/:id/leave", to: "courses#leave", as: :leave_course
+  get "/courses/:id/new_student", to: "roles#new"
+  get "/courses/:id/remove_student", to: "roles#remove_student"
 
   resources :courses do
     resources :posts do
@@ -20,6 +22,7 @@ Rails.application.routes.draw do
 
   post "/courses/:course_id/posts/new", to: "posts#create"
   post "/courses/:course_id/posts/:post_id/comments/new", to: "comments#create"
+  post "/courses/:id/new_student", to: "roles#create", as: :new_student_course
 
 
 end

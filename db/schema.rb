@@ -39,8 +39,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_06_193532) do
     t.bigint "user_id", null: false
     t.bigint "course_id", null: false
     t.text "body"
-    t.bigint "postable_id"
-    t.string "postable_type"
     t.string "title"
     t.index ["course_id"], name: "index_posts_on_course_id"
     t.index ["user_id"], name: "index_posts_on_user_id"
