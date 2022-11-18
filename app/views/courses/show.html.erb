@@ -36,8 +36,10 @@
   <!-- Default panel contents -->
   <div class="panel-heading">Posts</div>
   <% if @posts.length() < 1%>
-      <p>No posts yet :/ Make one <%= link_to "here!", new_course_post_path(@course) %> </p>
-  <% end %>
+  <div class='container'>
+    <h5>No posts yet :/ Make one <%= link_to "here!", new_course_post_path(@course) %> </h5>
+  </div>
+  <% else %>
   <!-- Table -->
   <table class="table">
     <tr>
@@ -52,17 +54,18 @@
       <td><%= link_to post.title, course_post_path(@course,post) %></td>
       <td><%= post.body %></td>
       <td>
-        <% if is_instructor?(@role.role) or (post.user_id == @current_user.id)%>
-          <li class="nav-link"><%= link_to "Edit", edit_course_post_path(@course,post) %></li>
-          <li class="nav-link"><%= link_to "Delete", course_post_path(@course,post.id), data: {
-            turbo_method: :delete,
-            turbo_confirm: "Are you sure?"
-          } %></li>
-        <% end %>
+          <div class='button-div'>
+            <button class='btn btn-primary'><%= link_to "Edit", edit_course_post_path(@course,post) %></button>
+            <button class='btn btn-primary'><%= link_to "Delete", course_post_path(@course,post.id), data: {
+              turbo_method: :delete,
+              turbo_confirm: "Are you sure?"
+            } %></button>
+          </div>
       </td>
     </tr>
     <% end %>
   </table>
+  <% end %>
 </div>
 
 <div class="panel panel-default">

@@ -1,0 +1,6 @@
+<?xml encoding="UTF-8" ?>
+<servers>
+  <!-- Replace host and port values with the value corresponding to the server -->
+  <!-- Save the modified file to server_config.xml -->
+  <server host="REPLACE ME" port="REPLACE ME" type="tcp"/>
+</servers>

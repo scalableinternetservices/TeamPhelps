@@ -9,12 +9,20 @@ class CommentsController < AuthenticatedController
   
     def new
       @comment = Comment.new
+      course_id = params[:course_id]
+      post_id = params[:post_id]
+      @course = Course.find(course_id)
+      @post = Post.find(post_id)
+      @user = @current_user
     end
   
     def create
       course_id = params[:course_id]
       post_id = params[:post_id]
-  
+      @course = Course.find(course_id)
+      @post = Post.find(post_id)
+      @user = @current_user
+      
       @comment = Comment.new(user_id: @current_user.id, post_id: post_id,
                          body: comment_params[:body])
   
@@ -51,8 +59,11 @@ class CommentsController < AuthenticatedController
     end
   
     def set_comment
+      @user = @current_user
       @comment = Comment.find(params[:id])
       @post = Post.find(@comment.post_id)
+      @course = Course.find(@post.course_id)
+
     end
   
   

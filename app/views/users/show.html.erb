@@ -32,7 +32,9 @@
 </div><!-- /.container-fluid -->
 </nav>
 <div class='main container' style='text-align:left;'>
+<div class='container'>
 <h3> My Classes </h3>
+</div>
 
 <div class='list-group' >
 <% if @courses.length() > 0 %>
@@ -44,7 +46,9 @@
   <% end %>
 </ul>
 <% else %>
+  <div class='container'>
     <p> Looks like you haven't registered for any courses! Please click <%= link_to "here", courses_path %> to find a course to join. </p>
+  </div>
 <% end %>
 
 </div>

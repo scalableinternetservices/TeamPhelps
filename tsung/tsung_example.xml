@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<!DOCTYPE tsung SYSTEM "/usr/local/share/tsung/tsung-1.0.dtd" [
+    <!ENTITY serverConfig SYSTEM "server_config.xml">
+  ] >
+<tsung loglevel="notice">
+  <clients>
+    <client host="localhost" maxusers="32768" use_controller_vm="true"/>
+  </clients>
+
+  &serverConfig;
+
+  <load>
+    <arrivalphase phase="1" duration="5" unit="second">
+      <users arrivalrate="1" unit="second"/>
+    </arrivalphase>
+    <arrivalphase phase="2" duration="5" unit="second">
+      <users arrivalrate="2" unit="second"/>
+    </arrivalphase>
+    <arrivalphase phase="3" duration="5" unit="second">
+      <users arrivalrate="4" unit="second"/>
+    </arrivalphase>
+    <arrivalphase phase="4" duration="5" unit="second">
+      <users arrivalrate="8" unit="second"/>
+    </arrivalphase>
+    <arrivalphase phase="5" duration="5" unit="second">
+      <users arrivalrate="16" unit="second"/>
+    </arrivalphase>
+    <arrivalphase phase="6" duration="5" unit="second">
+      <users arrivalrate="32" unit="second"/>
+    </arrivalphase>
+    <arrivalphase phase="7" duration="5" unit="second">
+      <users arrivalrate="64" unit="second"/>
+    </arrivalphase>
+    <arrivalphase phase="8" duration="5" unit="second">
+      <users arrivalrate="128" unit="second"/>
+    </arrivalphase>
+    <arrivalphase phase="9" duration="5" unit="second">
+      <users arrivalrate="256" unit="second"/>
+    </arrivalphase>
+    <arrivalphase phase="10" duration="5" unit="second">
+      <users arrivalrate="512" unit="second"/>
+    </arrivalphase>
+  </load>
+
+  <options>
+    <option name="global_ack_timeout" value="2000"/>
+  </options>
+
+  <sessions>
+    <session name="example" type="ts_http" weight="1">
+      <setdynvars sourcetype="random_string" length="16">
+        <var name="username" />
+      </setdynvars>
+      <setdynvars sourcetype="eval"
+          code="fun({Pid,DynVars})->
+          {ok,Val}=ts_dynvars:lookup(username,DynVars),
+          &lt;&lt;Val/binary, &quot;@example.com&quot;&gt;&gt; end.">
+        <!-- Create user_email based on username variable -->
+        <var name="user_email" />
+        </setdynvars>
+      <request>
+        <http url="/" version="1.0" method="GET"></http>
+      </request>
+      <request subst="true">
+        <dyn_variable name="redirect" re="Location: (http://.*)\r"/>
+        <http url="/users?user[name]=%%_username%%&amp;user[email]=%%_user_email%%" version="1.0" method="POST"></http>
+      </request>
+      <request subst="true">
+        <http url="%%_redirect%%" method="GET"></http>
+      </request>
+    </session>
+  </sessions>
+</tsung>
