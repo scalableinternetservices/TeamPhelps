@@ -10,10 +10,11 @@ class RolesController < AuthenticatedController
   def create
     @user_email = role_params[:user_email].downcase
     @user = User.where(email: @user_email).first
+    @user_role = helpers.role_to_id(role_params[:user_role])
 
     if @user
       @course = Course.find(params[:id])
-      @role = Role.new(user: @user, course: @course, role: 1)
+      @role = Role.new(user: @user, course: @course, role: @user_role)
 
       if @role.save
         redirect_to course_url(@course)
@@ -43,6 +44,6 @@ class RolesController < AuthenticatedController
 
 
   def role_params
-    params.require(:role).permit(:user_email)
+    params.require(:role).permit(:user_email, :user_role)
   end
 end
