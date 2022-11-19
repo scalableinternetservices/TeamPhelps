@@ -18,9 +18,6 @@ gem "puma", "~> 5.0"
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
 gem "importmap-rails"
 
-# Pagination
-gem 'kaminari'
-
 # Reset the id's after deleting the elements in a table
 gem 'activerecord-reset-pk-sequence'
 
