@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   get "/courses/:id/remove_student", to: "roles#remove_student"
 
   resources :courses do
+    get '/page/:page', action: :index, on: :collection
     resources :posts do
       resources :comments, only: [:edit, :show, :create, :update, :destroy, :new]
     end

@@ -4,7 +4,7 @@ class CoursesController < AuthenticatedController
   
     # GET /posts or /posts.json
     def index
-      @courses = Course.all
+      @courses = Course.order(:name).page params[:page]
       #Temporary variable for the navbar, until we find a better solution
       @user = @current_user
     end
