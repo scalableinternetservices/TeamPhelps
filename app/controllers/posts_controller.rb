@@ -5,11 +5,11 @@ class PostsController < AuthenticatedController
 
 
   def index
-    @posts = Post.all
+    @posts = Post.order(:title).page params[:page]
   end
 
   def show
-    @comments = Comment.where(post_id: @post.id)
+    @comments = Comment.where(post_id: @post.id).order(:created_at).page params[:comments_pagina]
     @post_user = User.find(@post.user_id)
   end
 
