@@ -10,12 +10,12 @@ class CoursesController < AuthenticatedController
     end
   
     def show
-      @roles = Role.where(course_id: @course.id)
+      @roles = Role.where(course_id: @course.id).order(:user_id).page params[:mem_pagina]
       #Temporary variable for the navbar, until we find a better solution
       @user = @current_user
 
       @role = Role.where(user_id: @user, course_id:@course.id).first
-      @posts = Post.where(course_id: @course.id)
+      @posts = Post.where(course_id: @course.id).order(:created_at).page params[:posts_pagina]
 
     end
   

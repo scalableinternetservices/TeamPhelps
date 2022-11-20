@@ -17,85 +17,87 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li><%= link_to "Create post", new_course_post_path(@course) %> </li>
-      <% if is_instructor? @user_role %> 
-        <li class="nav-link"><%= link_to "Edit Course", edit_course_path(@course) %></li>
-        <li class="nav-link"><%= link_to "Delete Course", course_path(@course), data: {
+        <% if is_instructor? @user_role %>
+          <li class="nav-link"><%= link_to "Edit Course", edit_course_path(@course) %></li>
+          <li class="nav-link"><%= link_to "Delete Course", course_path(@course), data: {
             turbo_method: :delete,
             turbo_confirm: "Are you sure?"
-          } %> 
-        </li>
-      <% end %>
+          } %>
+          </li>
+        <% end %>
         <li><%= link_to "Logout", logout_path%> </li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
 <div class='main container' style='text-align:left;'>
-<h3><%=@course.name %></h3>
-<div class="panel panel-default">
-  <!-- Default panel contents -->
-  <div class="panel-heading">Posts</div>
-  <% if @posts.length() < 1%>
-  <div class='container'>
-    <h5>No posts yet :/ Make one <%= link_to "here!", new_course_post_path(@course) %> </h5>
+  <h3><%=@course.name %></h3>
+  <div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading">Posts</div>
+    <% if @posts.length() < 1%>
+      <div class='container'>
+        <h5>No posts yet :/ Make one <%= link_to "here!", new_course_post_path(@course) %> </h5>
+      </div>
+    <% else %>
+      <!-- Table -->
+      <table class="table">
+        <tr>
+          <th>Author</th>
+          <th>Title</th>
+          <th>Body</th>
+          <th></th>
+        </tr>
+        <% @posts.each do |post|%>
+          <tr>
+            <td><%= User.find(post.user_id).name %></td>
+            <td><%= link_to post.title, course_post_path(@course,post) %></td>
+            <td><%= post.body %></td>
+            <td>
+              <div class='button-div'>
+                <button class='btn btn-primary'><%= link_to "Edit", edit_course_post_path(@course,post) %></button>
+                <button class='btn btn-primary'><%= link_to "Delete", course_post_path(@course,post.id), data: {
+                  turbo_method: :delete,
+                  turbo_confirm: "Are you sure?"
+                } %></button>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </table>
+    <% end %>
   </div>
-  <% else %>
-  <!-- Table -->
-  <table class="table">
-    <tr>
-      <th>Author</th>
-      <th>Title</th>
-      <th>Body</th>
-      <th></th>
-    </tr>
-    <% @posts.each do |post|%>
-    <tr>
-      <td><%= User.find(post.user_id).name %></td>
-      <td><%= link_to post.title, course_post_path(@course,post) %></td>
-      <td><%= post.body %></td>
-      <td>
-          <div class='button-div'>
-            <button class='btn btn-primary'><%= link_to "Edit", edit_course_post_path(@course,post) %></button>
-            <button class='btn btn-primary'><%= link_to "Delete", course_post_path(@course,post.id), data: {
-              turbo_method: :delete,
-              turbo_confirm: "Are you sure?"
-            } %></button>
-          </div>
-      </td>
-    </tr>
-    <% end %>
-  </table>
-  <% end %>
-</div>
+  <%= paginate @posts, param_name: :posts_pagina %>
 
-<div class="panel panel-default">
-  <!-- Default panel contents -->
-  <div class="panel-heading">Members</div>
-  <!-- Table -->
-  <table class="table">
-    <tr>
-      <th>Name</th>
-      <th>Email</th>
-      <th>Role</th>
-      <th>Leave Course</th>
-    </tr>
-    <% @roles.each do |role|%>
-    <tr>
-      <td><%= link_to role.user.name, role.user%></td>
-      <td><%= role.user.email%></td>
-      <td><%= role_to_text role.role %></td>
-      <td>
-      <% if role.role == 0%>
-        <%= "Cannot leave course as instructor"%>
-      <%end%>
-      <% if @role.role == 0 and role.role == 1 %>
-        <%= link_to "Remove", {:controller => "roles", action: :remove_student, user_id: role.user}%>
-      <%end%>
-      </td>
-    </tr>
-    <% end %>
-  </table>
-</div>
+  <div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading">Members</div>
+    <!-- Table -->
+    <table class="table">
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Leave Course</th>
+      </tr>
+      <% @roles.each do |role|%>
+        <tr>
+          <td><%= link_to role.user.name, role.user%></td>
+          <td><%= role.user.email%></td>
+          <td><%= role_to_text role.role %></td>
+          <td>
+            <% if role.role == 0%>
+              <%= "Cannot leave course as instructor"%>
+            <%end%>
+            <% if @role.role == 0 and role.role == 1 %>
+              <%= link_to "Remove", {:controller => "roles", action: :remove_student, user_id: role.user}%>
+            <%end%>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+  <%= paginate @roles, param_name: :mem_pagina %>
   <div>
     <% if @role.role ==0 %>
       <%= link_to "Add a student", new_student_course_path%>
