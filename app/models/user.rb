@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+    paginates_per 15
     has_many :roles, autosave: true, dependent: :destroy
     has_many :courses, through: :roles
     has_many :posts, dependent: :destroy, as: :postable

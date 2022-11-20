@@ -1,6 +1,7 @@
 class Post < ApplicationRecord
   # belongs_to :user
   # belongs_to :class
+  paginates_per 15
   belongs_to :postable, polymorphic: true, optional: true
   has_many :comments, dependent: :destroy, as: :commentable
 
