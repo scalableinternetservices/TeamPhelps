@@ -2,6 +2,13 @@
   <div>
     <%= form.label "user email" %><br>
     <%= form.text_field :user_email %>
+    <p></p>
+    <%= form.label :user_role, 'Instructor', :value => 'Instructor' %>
+    <%= form.radio_button :user_role, 'Instructor' %>
+    <%= form.label :user_role, 'Student', :value => 'Student' %>
+    <%= form.radio_button :user_role, 'Student'%>
+    <%= form.label :user_role, 'TA', :value => 'TA' %>
+    <%= form.radio_button :user_role, 'TA', :checked => true%>
     <% role.errors.full_messages_for(:user_email).each do |message| %>
           <div class="error_msg"><%= message %></div><br>
     <% end %>
