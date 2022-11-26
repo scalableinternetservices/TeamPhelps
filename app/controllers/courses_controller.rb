@@ -32,7 +32,7 @@ class CoursesController < AuthenticatedController
 
     def leave
       current_role = @course.roles.find_by(user_id: @current_user.id)
-      if current_role.role == 1
+      if current_role.role == 1 or current_role.role == 2
         @course.roles.find_by(user_id: @current_user.id).destroy
       end
         redirect_to @current_user

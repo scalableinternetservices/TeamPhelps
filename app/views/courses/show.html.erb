@@ -69,35 +69,37 @@
   </div>
   <%= paginate @posts, param_name: :posts_pagina %>
 
-  <div class="panel panel-default">
-    <!-- Default panel contents -->
-    <div class="panel-heading">Members</div>
-    <!-- Table -->
-    <table class="table">
-      <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Role</th>
-        <th>Leave Course</th>
-      </tr>
-      <% @roles.each do |role|%>
-        <tr>
-          <td><%= link_to role.user.name, role.user%></td>
-          <td><%= role.user.email%></td>
-          <td><%= role_to_text role.role %></td>
-          <td>
-            <% if role.role == 0%>
-              <%= "Cannot leave course as instructor"%>
-            <%end%>
-            <% if @role.role == 0 and role.role == 1 %>
-              <%= link_to "Remove", {:controller => "roles", action: :remove_student, user_id: role.user}%>
-            <%end%>
-          </td>
-        </tr>
-      <% end %>
-    </table>
-  </div>
-  <%= paginate @roles, param_name: :mem_pagina %>
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading">Members</div>
+  <!-- Table -->
+  <table class="table">
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Role</th>
+      <th></th>
+<!--      <th>Leave Course</th>-->
+    </tr>
+    <% @roles.each do |role|%>
+    <tr>
+      <td><%= link_to role.user.name, role.user%></td>
+      <td><%= role.user.email%></td>
+      <td><%= role_to_text role.role %></td>
+      <td>
+      <%# if role.role == 0%>
+        <%#= "Cannot leave course as instructor"%>
+      <%#end%>
+      <% if @role.role == 0 and (role.role == 1 or role.role == 2) %>
+        <%= link_to "Remove", {:controller => "roles", action: :remove_student, user_id: role.user}%>
+      <%end%>
+      </td>
+    </tr>
+    <% end %>
+  </table>
+</div>
+<%= paginate @roles, param_name: :mem_pagina %>
+
   <div>
     <% if @role.role ==0 %>
       <%= link_to "Add a student", new_student_course_path%>
