@@ -89,6 +89,8 @@ export function course(data) {
     // console.log(good_list);
     check_failure_rate.add(!check_res, { page: "course" });
     time_to_first_byte.add(res.timings.waiting, { ttfbURL: res.url });
+    res = http.get(url+"/courses");
+    
 }
 
 export function teardown(data){
