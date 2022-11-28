@@ -7,13 +7,51 @@ import { parseHTML } from 'k6/html';
 
 export let options = {
     systemTags: ['status', 'method', 'url', 'scenario', 'group'],
-    // discardResponseBodies: true,
+    teardownTimeout: "10m",
     scenarios:{
-        make_course:{
-            executor: 'shared-iterations',
+        spike_post_nothing:{ //simulate people visiting page
+        executor: 'ramping-vus',
+        exec: 'get_course_page',
+        startVUs: 0,
+        stages: [
+            {duration:'5s', target: 5},
+            {duration:'5s', target: 10},
+            {duration:'5s', target: 45},
+            {duration:'5s', target: 45},
+            {duration:'5s', target: 15},
+            {duration:'10s', target: 0},
+        ],
+        gracefulRampDown: '30s',
+        },
+        spike_make_post:{ //simulate people visiting page and making posts
+            executor: 'ramping-vus',
             exec: 'course',
-            vus: 1,
-            iterations: 10
+            startTime:'70s', //assumes first test will take <40s
+            startVUs: 0,
+            stages: [
+                {duration:'5s', target: 5},
+                {duration:'5s', target: 10},
+                {duration:'5s', target: 45},
+                {duration:'5s', target: 45},
+                {duration:'5s', target: 15},
+                {duration:'10s', target: 0},
+            ],
+            gracefulRampDown: '30s',
+        },
+        spike_post_nothing2:{ //simulate people visiting page after all posts made
+            executor: 'ramping-vus',
+            exec: 'get_course_page',
+            startTime: '110s', //assumes tests above will take <80s
+            startVUs: 0,
+            stages: [
+                {duration:'5s', target: 5},
+                {duration:'5s', target: 10},
+                {duration:'5s', target: 45},
+                {duration:'5s', target: 45},
+                {duration:'5s', target: 15},
+                {duration:'10s', target: 0},
+            ],
+            gracefulRampDown: '30s'
         },
     },
     noCookiesReset: true,
@@ -87,6 +125,20 @@ export function course(data) {
         good_list.push(course_url);
     }
     // console.log(good_list);
+    check_failure_rate.add(!check_res, { page: "course" });
+    time_to_first_byte.add(res.timings.waiting, { ttfbURL: res.url });
+}
+
+export function get_course_page(data) {
+    const jar = http.cookieJar();
+    jar.set(url+"/courses", "_app_session", data.cook._app_session);
+    let res = http.get(url+"/courses");
+    let check_res = check(res, {
+        "200 requests": (r) => r.status >= 200 && r.status <300,
+    });
+    if (check_res) {
+        successful_req.add(1);
+    }
     check_failure_rate.add(!check_res, { page: "course" });
     time_to_first_byte.add(res.timings.waiting, { ttfbURL: res.url });
 }
