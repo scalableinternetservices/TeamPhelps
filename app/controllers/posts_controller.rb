@@ -29,7 +29,7 @@ class PostsController < AuthenticatedController
 
 
     if @post.save
-      redirect_to controller: 'courses', action: 'show', id: course_id
+      redirect_to controller: 'posts', action: 'show', id: @post.id, course_id: course_id
     else
       render :new, status: :unprocessable_entity
     end

@@ -2,6 +2,7 @@ import http from "k6/http";
 import { check, group, sleep } from "k6";
 import { Counter, Rate, Trend } from "k6/metrics";
 import exec from 'k6/execution';
+import uuid from './uuid.js';
 
 export let options = {
     systemTags: ['status', 'method', 'url', 'scenario', 'group'],
@@ -11,7 +12,8 @@ export let options = {
             executor: 'shared-iterations',
             exec: 'comment',
             vus: 1,
-            iterations: 100
+            iterations: 100,
+            maxDuration: "30m"
         },
     },
     noCookiesReset: true,
@@ -87,7 +89,7 @@ export function setup() {
     check_failure_rate.add(!check_res, { page: "login" });
     time_to_first_byte.add(res.timings.waiting, { ttfbURL: res.url });
 
-    return { purl: post_url,curl: course_url, cook: cookie };
+    return { purl: post_url, curl: course_url, cook: cookie };
 
 }
 
@@ -97,7 +99,7 @@ export function setup() {
 export function comment(data) {
     const jar = http.cookieJar();
     jar.set(data.purl, "_app_session", data.cook._app_session);
-    let course_url = data.purl;
+    let post_url = data.purl;
 
     const params = {
         headers: {
@@ -106,11 +108,10 @@ export function comment(data) {
     };
 
     let payload = JSON.stringify({
-        title:'post'+exec.instance.iterationsCompleted,
-        body:'load_testing_post_body'
+        body:'comment'+exec.instance.iterationsCompleted,
     });
 
-    let res = http.post(course_url+"/posts", payload, params);
+    let res = http.post(post_url+"/comments", payload, params);
     let check_res = check(res, {
         "200 requests": (r) => r.status >= 200 && r.status <300,
     });
