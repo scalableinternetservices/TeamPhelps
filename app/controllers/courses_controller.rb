@@ -78,13 +78,15 @@ class CoursesController < AuthenticatedController
       roles.each do |role|
         role.destroy
       end
-  
-      @course.destroy
-  
-      respond_to do |format|
-        format.html { redirect_to courses_url, notice: "Course was successfully destroyed." }
-        format.json { head :no_content }
+      
+      posts = Post.where(course_id: @course.id)
+      posts.each do |post|
+        post.destroy
       end
+      
+      @course.destroy
+      redirect_to courses_path, notice: "Course was successfully destroyed", status: :see_other
+
     end
   
     private
