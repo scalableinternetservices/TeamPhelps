@@ -10,7 +10,7 @@ class UsersController < ApplicationController
       
       def show
         @user = User.find(params[:id])
-        @courses = @user.courses
+        @courses = @user.courses.order(:name).page params[:courses_pagina]
       end
 
       def login

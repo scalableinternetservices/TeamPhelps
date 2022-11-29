@@ -20,6 +20,10 @@ Rails.application.routes.draw do
     end
   end
 
+  # resources :users do
+  #   get '/page/:page', action: :index, on: :collection
+  # end
+
   post "/courses/:course_id/posts/new", to: "posts#create"
   post "/courses/:course_id/posts/:post_id/comments/new", to: "comments#create"
   post "/courses/:id/new_student", to: "roles#create", as: :new_student_course

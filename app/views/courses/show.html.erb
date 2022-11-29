@@ -22,51 +22,52 @@
         <li class="nav-link"><%= link_to "Delete Course", course_path(@course), data: {
             turbo_method: :delete,
             turbo_confirm: "Are you sure?"
-          } %> 
-        </li>
-      <% end %>
+          } %>
+          </li>
+        <% end %>
         <li><%= link_to "Logout", logout_path%> </li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
 <div class='main container' style='text-align:left;'>
-<h3><%=@course.name %></h3>
-<div class="panel panel-default">
-  <!-- Default panel contents -->
-  <div class="panel-heading">Posts</div>
-  <% if @posts.length() < 1%>
-  <div class='container'>
-    <h5>No posts yet :/ Make one <%= link_to "here!", new_course_post_path(@course) %> </h5>
-  </div>
-  <% else %>
-  <!-- Table -->
-  <table class="table">
-    <tr>
-      <th>Author</th>
-      <th>Title</th>
-      <th>Body</th>
-      <th></th>
-    </tr>
-    <% @posts.each do |post|%>
-    <tr>
-      <td><%= User.find(post.user_id).name %></td>
-      <td><%= link_to post.title, course_post_path(@course,post) %></td>
-      <td><%= post.body %></td>
-      <td>
-          <div class='button-div'>
-            <button class='btn btn-primary'><%= link_to "Edit", edit_course_post_path(@course,post) %></button>
-            <button class='btn btn-primary'><%= link_to "Delete", course_post_path(@course,post.id), data: {
-              turbo_method: :delete,
-              turbo_confirm: "Are you sure?"
-            } %></button>
-          </div>
-      </td>
-    </tr>
+  <h3><%=@course.name %></h3>
+  <div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading">Posts</div>
+    <% if @posts.length() < 1%>
+      <div class='container'>
+        <h5>No posts yet :/ Make one <%= link_to "here!", new_course_post_path(@course) %> </h5>
+      </div>
+    <% else %>
+      <!-- Table -->
+      <table class="table">
+        <tr>
+          <th>Author</th>
+          <th>Title</th>
+          <th>Body</th>
+          <th></th>
+        </tr>
+        <% @posts.each do |post|%>
+          <tr>
+            <td><%= User.find(post.user_id).name %></td>
+            <td><%= link_to post.title, course_post_path(@course,post) %></td>
+            <td><%= post.body %></td>
+            <td>
+              <div class='button-div'>
+                <button class='btn btn-primary'><%= link_to "Edit", edit_course_post_path(@course,post) %></button>
+                <button class='btn btn-primary'><%= link_to "Delete", course_post_path(@course,post.id), data: {
+                  turbo_method: :delete,
+                  turbo_confirm: "Are you sure?"
+                } %></button>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </table>
     <% end %>
-  </table>
-  <% end %>
-</div>
+  </div>
+  <%= paginate @posts, param_name: :posts_pagina %>
 
 <div class="panel panel-default">
   <!-- Default panel contents -->
@@ -97,6 +98,8 @@
     <% end %>
   </table>
 </div>
+<%= paginate @roles, param_name: :mem_pagina %>
+
   <div>
     <% if @role.role ==0 %>
       <%= link_to "Add a student", new_student_course_path%>

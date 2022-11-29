@@ -19,14 +19,14 @@
       <ul class="nav navbar-nav navbar-right">
         <li><%= link_to "Back to Course", course_path(@course) %> </li>
         <li><%= link_to "Create new post", new_course_post_path(@course) %> </li>
-      <% if is_instructor? @user_role or @user.id == @post.user_id%> 
-        <li class="nav-link"><%= link_to "Edit Post", edit_course_post_path(@course) %></li>
-        <li class="nav-link"><%= link_to "Delete Post", course_post_path(@course), data: {
+        <% if is_instructor? @user_role or @user.id == @post.user_id%>
+          <li class="nav-link"><%= link_to "Edit Post", edit_course_post_path(@course) %></li>
+          <li class="nav-link"><%= link_to "Delete Post", course_post_path(@course), data: {
             turbo_method: :delete,
             turbo_confirm: "Are you sure?"
-          } %> 
-        </li>
-      <% end %>
+          } %>
+          </li>
+        <% end %>
         <li><%= link_to "Logout", logout_path%> </li>
       </ul>
     </div><!-- /.navbar-collapse -->
@@ -44,29 +44,30 @@
     <p><%= @post.body %></p>
     <hr/>
     <ol class="list-group list-group-numbered">
-    <% @comments.each do |comment|%>
-      <li class="list-group-item d-flex justify-content-between align-items-start">
-        <div class="ms-2 me-auto">
-        <div class="d-flex w-100 justify-content-between">
-          <h5 class="mb-1"><%= User.find(comment.user_id).name %></h5>
-        </div>
-        <p class="mb-1"><%= comment.body %></p> 
-        <% if is_instructor? @role.role or @user.id == comment.user_id%>
-        <small>
-        <%= link_to "Edit", edit_course_post_comment_path(@course,@post,comment) %>
-        <%= link_to "Delete", course_post_comment_path(@course,@post,comment), data: {
-            turbo_method: :delete,
-            turbo_confirm: "Are you sure?"
-          } %>
-        </small>
-        <% end %>
-        </div>
-      </li>
-    <% end %>
+      <% @comments.each do |comment|%>
+        <li class="list-group-item d-flex justify-content-between align-items-start">
+          <div class="ms-2 me-auto">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-1"><%= User.find(comment.user_id).name %></h5>
+            </div>
+            <p class="mb-1"><%= comment.body %></p>
+            <% if is_instructor? @role.role or @user.id == comment.user_id%>
+              <small>
+                <%= link_to "Edit", edit_course_post_comment_path(@course,@post,comment) %>
+                <%= link_to "Delete", course_post_comment_path(@course,@post,comment), data: {
+                  turbo_method: :delete,
+                  turbo_confirm: "Are you sure?"
+                } %>
+              </small>
+            <% end %>
+          </div>
+        </li>
+      <% end %>
     </ol>
+    <%= paginate @comments, param_name: :comments_pagina %>
   </div>
 </div>
 <div class='container'>
-<button class='btn btn-primary'><%= link_to "New Comment", new_course_post_comment_path(course_id: @course.id, post_id: @post.id)%></a>
-</button>
+  <button class='btn btn-primary'><%= link_to "New Comment", new_course_post_comment_path(course_id: @course.id, post_id: @post.id)%></a>
+  </button>
 </div>
