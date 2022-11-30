@@ -10,6 +10,13 @@ class PostsController < AuthenticatedController
 
   def show
     @comments = Comment.where(post_id: @post.id).order(:created_at).page params[:comments_pagina]
+    user_ids = []
+    @comments.each do |comment|
+      user_ids << comment.user_id
+    end
+    comments_users = User.where(id: user_ids)
+    @comments_users_hash = Hash[comments_users.collect { |v| [v.id, v]}]
+
     @post_user = User.find(@post.user_id)
   end
 

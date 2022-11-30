@@ -17,6 +17,14 @@ class CoursesController < AuthenticatedController
       @role = Role.where(user_id: @user, course_id:@course.id).first
       @posts = Post.where(course_id: @course.id).order(:created_at).page params[:posts_pagina]
 
+      user_ids = []
+      @posts.each do |post|
+        user_ids << post.user_id
+      end
+      posts_users = User.where(id: user_ids)
+      @posts_users_hash = Hash[posts_users.collect { |v| [v.id, v]}]
+
+
     end
   
     def new

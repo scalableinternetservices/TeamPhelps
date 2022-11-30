@@ -50,7 +50,7 @@
         </tr>
         <% @posts.each do |post|%>
           <tr>
-            <td><%= User.find(post.user_id).name %></td>
+            <td><%=  @posts_users_hash[post.user_id].name %></td>
             <td><%= link_to post.title, course_post_path(@course,post) %></td>
             <td><%= post.body %></td>
             <td>
